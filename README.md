@@ -1,2 +1,2 @@
 # MineFine
-dkastsataastsatsatsatastsat
+Kes seda loeb on gert rekt
