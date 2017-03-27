@@ -8,11 +8,10 @@
         android:id="@+id/toShop"
         android:text="@string/toShop" />
     <ImageView
-        android:src="@android:drawable/ic_menu_gallery"
+        android:src="@drawable/copper_rock"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/mainImage"
-        android:background="@drawable/copper_rock"
         android:layout_centerInParent="true" />
     <RelativeLayout
         android:orientation="horizontal"
