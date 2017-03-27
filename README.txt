@@ -1,4 +1,4 @@
-https://github.com/kangur69/MineFine Kıik meie failid
+https://github.com/kangur69/MineFine K√µik meie failid
 
 sfhsdfasg - Gert Paimla
 Kangur69 - Kiur Kangur
@@ -8,4 +8,4 @@ Toomius - Toomas Risthein
 
 Release date 12.04.2017
 
-Klikkimispıhilime m‰ng kus teemaks on runescape.
+Klikkimisp√µhilime m√§ng kus teemaks on runescape.
