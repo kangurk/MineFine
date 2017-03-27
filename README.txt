@@ -1,6 +1,6 @@
 https://github.com/kangur69/MineFine Kõik meie failid
 
-sfhsdfasg - Gert Paimla
+sfhsdfasg - Gert Morten Paimla
 Kangur69 - Kiur Kangur
 Ott Kirss - Ott Kirss
 Kaspar321 - Kaspar Bankier
