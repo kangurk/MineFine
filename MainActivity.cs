@@ -30,17 +30,6 @@ namespace minefine
             var totalExp = FindViewById<TextView>(Resource.Id.totalExp);
             var totalLevel = FindViewById<TextView>(Resource.Id.Level);
 
-            switch (pictureName)
-            {
-                case "Copper": mainImage.SetImageResource(Resource.Drawable.Copper_rock); break;
-                case "Tin": mainImage.SetImageResource(Resource.Drawable.Tin_rock); break;
-                case "Iron":mainImage.SetImageResource(Resource.Drawable.Iron_rock); break;
-                case "Silver": mainImage.SetImageResource(Resource.Drawable.Silver_rock); break;
-                case "Coal":mainImage.SetImageResource(Resource.Drawable.Coal_rock); break;
-                case "Mithril": mainImage.SetImageResource(Resource.Drawable.Mithril_rock); break;
-                case "Adamantite": mainImage.SetImageResource(Resource.Drawable.Adamantite_rock); break;
-                case "Runite": mainImage.SetImageResource(Resource.Drawable.Runite_rock); break;
-            }
             totalExp.Text = "total experience is " + experience.ToString();
 
             toShop.Click += delegate
