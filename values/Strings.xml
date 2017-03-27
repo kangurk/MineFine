@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="toShop">Visit the store</string>
+    <string name="totalExp">Total experience</string>
+    <string name="expHour">Experience hour</string>
+    <string name="toMain">Back to mainscreen</string>
+    <string name="Upgrade">Upgrade to [ore]</string>
+    <string name="ApplicationName">minefine</string>
+</resources>
