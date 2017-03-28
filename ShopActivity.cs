@@ -29,12 +29,16 @@ namespace minefine
                                new Ore("Adamantite", "Adamantite_rock"),
                                new Ore("Runite", "Runite_rock"),
                                };
-    
+
             SetContentView(Resource.Layout.Shop);
             var text = FindViewById<TextView>(Resource.Id.Ore);
-            var shop = FindViewById<ListView>(Resource.Id.shopMenu);
 
-            shop.Adapter = new ArrayAdapter<String>(this, Android.Resource.Layout.ActivityListItem, ores);
+            var oreAdapter = new OreAdapter(this, ores);
+            var shopListView = FindViewById<ListView>(Resource.Id.shopMenu);
+            shopListView.Adapter = oreAdapter;
+
+            
+            
 
         }
     }
