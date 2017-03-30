@@ -97,6 +97,14 @@ namespace minefine
             alert.SetView(LayoutInflater.Inflate(Resource.Layout.levelUp, null));
             alert.Create().Show();
         }
+        private void oreCooldown()
+        {
+        
+        }
+        private void experienceHour()
+        {
+                
+        }
 
     }
 }
