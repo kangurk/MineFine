@@ -7,18 +7,35 @@ namespace minefine
     [Activity(Label = "minefine", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
-        string pictureName = "Copper";
+        string currentOre = "Copper";
         int experience = 0;
-        int copperCount = 0;
-        int tinCount = 0;
-        int ironCount = 0;
-        int silverCount = 0;
-        int coalCount = 0;
-        int mithrilCount = 0;
-        int adamantiteCount = 0;
-        int runiteCount = 0;
         int expLevel = 1;
         double nextLevel = 83;
+        int cooldownSeconds = 5;
+        
+
+        Dictionary<string, int> oreExp = new Dictionary<string, int>()
+        {
+            {"Copper", 10},
+            {"Tin", 17},
+            {"Iron", 30},
+            {"Silver", 40},
+            {"Coal", 50},
+            {"Mithril", 80},
+            {"Adamantite", 95},
+            {"Runite",125 },
+        };
+        Dictionary<string, int> oreCount = new Dictionary<string, int>()
+        {
+            {"Copper", 0},
+            {"Tin", 0},
+            {"Iron", 0},
+            {"Silver", 0},
+            {"Coal", 0},
+            {"Mithril", 0},
+            {"Adamantite", 0},
+            {"Runite", 0},
+        };
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -39,20 +56,14 @@ namespace minefine
 
             mainImage.Click += delegate
             {
-                switch (pictureName)
-                {
-                    case "Copper": experience += 10; copperCount += 1; break;
-                    case "Tin": experience += 17; tinCount += 1; break;
-                    case "Iron": experience += 30; ironCount += 1; break;
-                    case "Silver": experience += 40; silverCount += 1; break;
-                    case "Coal": experience += 50; coalCount += 1; break;
-                    case "Mithril": experience += 80; mithrilCount += 1; break;
-                    case "Adamantite": experience += 95; adamantiteCount += 1; break;
-                    case "Runite": experience += 125; runiteCount += 1; break;
-                }
-                totalExp.Text = "total experience is " + experience.ToString();
-                Level();
-                totalLevel.Text = "Your current level is " + expLevel.ToString();
+                    int clickExp = oreExp[currentOre];
+                    int Count = oreCount[currentOre];
+                    oreCount[currentOre] = Count + 1;
+                    experience += clickExp;
+                    totalExp.Text = "total experience is " + experience.ToString();
+                    Level();
+                    totalLevel.Text = "Your current level is " + expLevel.ToString();
+                    randomEvents();
             };
         }
         private int Level()
@@ -65,6 +76,26 @@ namespace minefine
                 nextLevel = together;
             }
             return 0;
+        }
+        private void randomEvents()
+        {
+            Java.Util.Random eventChance = new Java.Util.Random();
+            var chance = eventChance.NextInt(100);
+            if(chance == 1)
+            {
+                var alert = new AlertDialog.Builder(this);
+                alert.SetView(LayoutInflater.Inflate(Resource.Layout.RandomEvent, null));
+                alert.Create().Show();
+            }
+        }
+
+        private void levelUp()
+        {
+            //var levelupText = FindViewById<TextView>(Resource.Id.levelupText);
+            //levelupText.Text = "You've achieved level " + expLevel.ToString();
+            var alert = new AlertDialog.Builder(this);
+            alert.SetView(LayoutInflater.Inflate(Resource.Layout.levelUp, null));
+            alert.Create().Show();
         }
 
     }
