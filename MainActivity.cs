@@ -1,6 +1,11 @@
 using Android.App;
 using Android.Widget;
 using Android.OS;
+using System.Collections.Generic;
+using System.Timers;
+using Java.Util;
+using System.Threading;
+using System;
 
 namespace minefine
 {
