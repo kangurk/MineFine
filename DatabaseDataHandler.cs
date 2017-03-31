@@ -126,7 +126,7 @@ namespace minefine
 
 
         /// <summary>
-        /// returns Basically a list of Ore() Classes
+        /// returns: Basically a list of Ore() Classes
         /// </summary>
         /// <returns></returns>
         public ObservableCollection<Ore> getObservable()
@@ -146,7 +146,7 @@ namespace minefine
             connection.Close();
         }
         /// <summary>
-        /// Saves the Ore data to the local database
+        /// Saves the Exp data to the local database
         /// </summary>
         public void saveExpData(int exp)
         {
