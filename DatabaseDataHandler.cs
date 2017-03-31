@@ -17,7 +17,7 @@ namespace minefine
         SqliteConnection connection;
         ObservableCollection<Ore> oreCount = new ObservableCollection<Ore>();
         int experience;
-        //string currentOre = "Copper_Ore";
+        
         DatabaseDataHandler()
         {
             
