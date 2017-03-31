@@ -4,20 +4,18 @@ using System.Linq;
 using System.Text;
 
 using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using System.Collections.ObjectModel;
 
 namespace minefine
 {
     public class OreAdapter : BaseAdapter<Ore>
     {
-        Ore[] ores;
+        ObservableCollection<Ore> ores;
         Activity context;
 
-        public OreAdapter(Activity context, Ore[] ores) : base()
+        public OreAdapter(Activity context, ObservableCollection<Ore> ores) : base()
         {
             this.context = context;
             this.ores = ores;
@@ -35,20 +33,20 @@ namespace minefine
 
         public override int Count
         {
-            get { return ores.Length; }
+            get { return ores.Count; }
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             View view = convertView;
             if (view == null)
-            { 
+            {
                 view = context.LayoutInflater.Inflate(Android.Resource.Layout.ActivityListItem, null);
             }
 
             var oreObject = ores[position];
 
-            view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = oreObject.name;
+            view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = oreObject.Name;
             ImageView img = view.FindViewById<ImageView>(Android.Resource.Id.Icon);
 
             return view;
