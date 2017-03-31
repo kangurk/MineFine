@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Android.Content.PM;
 
-namespace MineFine
+namespace minefine
 {
     [Activity(Label = "minefine", MainLauncher = true, Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : Activity
