@@ -15,30 +15,19 @@ namespace minefine
     [Activity(Label = "ShopActivity")]
     public class ShopActivity : Activity
     {
-        Ore[] ores;
+        DatabaseDataHandler databaseDataHandler = DatabaseDataHandler.Instance;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-            ores = new Ore[] { new Ore("Copper", "Copper_rock"),
-                               new Ore("Tin", "Tin_rock"),
-                               new Ore("Iron", "Iron_rock"),
-                               new Ore("Silver", "Silver_rock"),
-                               new Ore("Coal", "Coal_rock"),
-                               new Ore("Mithril", "Mithril_rock"),
-                               new Ore("Adamantite", "Adamantite_rock"),
-                               new Ore("Runite", "Runite_rock"),
-                               };
+            
 
             SetContentView(Resource.Layout.Shop);
             var text = FindViewById<TextView>(Resource.Id.Ore);
 
-            var oreAdapter = new OreAdapter(this, ores);
+            var oreAdapter = new OreAdapter(this, databaseDataHandler.getObservable());
             var shopListView = FindViewById<ListView>(Resource.Id.shopMenu);
             shopListView.Adapter = oreAdapter;
-
-            
-            
 
         }
     }
