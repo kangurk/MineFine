@@ -56,7 +56,7 @@ namespace minefine
             {
                 //translation for this line = selecti observablelistist Ore class mille Ore.Name on sama nimega mis currentOre ja liida sellele 1 
                 //ja kuna observablecollection on reference databasedatahandler classi variablist siis muutub see value ka databasedatahandler classi observablecollectionis
-                var ore = oreCount.Select((p, i) => new { Ore = p, Index = i }).Where(p => p.Ore.Name == currentOre).First().Ore.OreCount += 1;
+                oreCount.Select((p, i) => new { Ore = p, Index = i }).Where(p => p.Ore.Name == currentOre).First().Ore.OreCount += 1;
 
                 experience += oreExp[currentOre];
                 totalExp.Text = "total experience is " + experience.ToString();
