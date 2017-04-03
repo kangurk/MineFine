@@ -29,7 +29,7 @@ namespace minefine
                 SqliteConnection.CreateFile(dbPath);
 
                 var commands = new[] {
-                "CREATE TABLE Exp (experience INTEGER);",
+                "CREATE TABLE Exp (experience INTEGER, expLevel INTEGER);",
                 "INSERT INTO Exp (experience, expLevel) VALUES ('0','1')",
                 "CREATE TABLE Ores (oreName VARCHAR(30), oreCount INTEGER);",
                 "INSERT INTO Ores (oreName, oreCount) VALUES ('Copper_Ore', '0')",
