@@ -118,6 +118,7 @@ namespace minefine
             base.OnPause();
             databaseDataHandler.saveOreData(); // ei tea millal(/)kuhu seda panna veel
             databaseDataHandler.saveExpData(experience);
+            databaseDataHandler.saveExpData(expLevel);
             
         }
         protected override void OnDestroy()
@@ -125,6 +126,7 @@ namespace minefine
             base.OnDestroy();
             databaseDataHandler.saveOreData(); // ei tea millal(/)kuhu seda panna veel
             databaseDataHandler.saveExpData(experience);
+            databaseDataHandler.saveExpData(expLevel);
         }
 
     }
