@@ -77,7 +77,7 @@ namespace minefine
         /// Execute a sql command that isn't supposed to return anything, ex: UPDATE, INSERT, CREATE etc (no connection opening or closing)
         /// </summary>
         /// <param name="query">The sql Query to execute</param>
-        public void executeCommand(string query)
+        private void executeCommand(string query)
         {
             using (var contents = connection.CreateCommand())
             {
