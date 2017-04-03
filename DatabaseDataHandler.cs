@@ -30,8 +30,7 @@ namespace minefine
 
                 var commands = new[] {
                 "CREATE TABLE Exp (experience INTEGER);",
-                "INSERT INTO Exp (experience) VALUES ('0')",
-                "INSERT INTO Exp (expLevel) VALUES ('0')",
+                "INSERT INTO Exp (experience, expLevel) VALUES ('0','1')",
                 "CREATE TABLE Ores (oreName VARCHAR(30), oreCount INTEGER);",
                 "INSERT INTO Ores (oreName, oreCount) VALUES ('Copper_Ore', '0')",
                 "INSERT INTO Ores (oreName, oreCount) VALUES ('Tin_Ore', '0')",
