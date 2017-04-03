@@ -17,6 +17,7 @@ namespace minefine
         SqliteConnection connection;
         ObservableCollection<Ore> oreCount = new ObservableCollection<Ore>();
         int experience;
+        int expLevel;
         
         DatabaseDataHandler()
         {
@@ -30,6 +31,7 @@ namespace minefine
                 var commands = new[] {
                 "CREATE TABLE Exp (experience INTEGER);",
                 "INSERT INTO Exp (experience) VALUES ('0')",
+                "INSERT INTO Exp (expLevel) VALUES ('0')",
                 "CREATE TABLE Ores (oreName VARCHAR(30), oreCount INTEGER);",
                 "INSERT INTO Ores (oreName, oreCount) VALUES ('Copper_Ore', '0')",
                 "INSERT INTO Ores (oreName, oreCount) VALUES ('Tin_Ore', '0')",
@@ -123,7 +125,23 @@ namespace minefine
             connection.Close();
             return experience;
         }
-
+         public int getexpLevel()
+        {
+            connection.Open();
+            using (var contents = connection.CreateCommand())
+            {
+                contents.CommandText = "SELECT expLevel from Exp";
+                var r = contents.ExecuteReader();
+                Console.WriteLine("Reading data");
+                while (r.Read())
+                {
+                    Console.WriteLine("expLevel = {0}", Convert.ToInt32(r["expLevel"].ToString()));
+                    expLevel = Convert.ToInt32(r["expLevel"].ToString());
+                }
+            }
+            connection.Close();
+            return expLevel;
+        }
 
         /// <summary>
         /// returns: Basically a list of Ore() Classes
