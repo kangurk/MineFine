@@ -46,6 +46,7 @@ namespace minefine
             initializeDatabase();
 
             totalExp.Text = "total experience is " + experience.ToString();
+            totalLevel.Text = "Your current level is " + expLevel.ToString();
             toShop.Click += delegate
             {
                 
