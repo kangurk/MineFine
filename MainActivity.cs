@@ -74,6 +74,7 @@ namespace minefine
                 double together = nextLevel + temp;
                 expLevel += 1;
                 nextLevel = together;
+                levelUp();
             }
             return 0;
         }
