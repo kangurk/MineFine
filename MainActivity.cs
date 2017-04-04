@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Android.Content.PM;
+using System;
 
-namespace minefine
+namespace MineFine
 {
     [Activity(Label = "minefine", MainLauncher = true, Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : Activity
@@ -44,12 +45,11 @@ namespace minefine
             var totalLevel = FindViewById<TextView>(Resource.Id.Level);
 
             initializeDatabase();
-
             totalExp.Text = "total experience is " + experience.ToString();
             totalLevel.Text = "Your current level is " + expLevel.ToString();
+
             toShop.Click += delegate
             {
-                
                 StartActivity(typeof(ShopActivity));
             };
 
@@ -74,7 +74,6 @@ namespace minefine
                 double together = nextLevel + temp;
                 expLevel += 1;
                 nextLevel = together;
-                levelUp();
             }
             return 0;
         }
@@ -92,6 +91,8 @@ namespace minefine
 
         private void levelUp()
         {
+            //var levelupText = FindViewById<TextView>(Resource.Id.levelupText);
+            //levelupText.Text = "You've achieved level " + expLevel.ToString();
             var alert = new AlertDialog.Builder(this);
             alert.SetView(LayoutInflater.Inflate(Resource.Layout.levelUp, null));
             alert.Create().Show();
@@ -109,24 +110,20 @@ namespace minefine
         /// </summary>
         private void initializeDatabase()
         {
-            databaseDataHandler.getDataTest();
-            experience = databaseDataHandler.getExp();
+            Tuple<int,int> values = databaseDataHandler.getDataFromDatabase();
+            experience = values.Item1;
+            expLevel = values.Item2;
             oreCount = databaseDataHandler.getObservable();
         }
         protected override void OnPause()
         {
             base.OnPause();
-            databaseDataHandler.saveOreData(); // ei tea millal(/)kuhu seda panna veel
-            databaseDataHandler.saveExpData(experience);
-            databaseDataHandler.saveexpLevel(expLevel);
-            
+            databaseDataHandler.saveDataDatabase(experience, expLevel); // ei tea millal(/)kuhu seda panna veel
         }
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            databaseDataHandler.saveOreData(); // ei tea millal(/)kuhu seda panna veel
-            databaseDataHandler.saveExpData(experience);
-            databaseDataHandler.saveexpLevel(expLevel);
+            databaseDataHandler.saveDataDatabase(experience, expLevel); // ei tea millal(/)kuhu seda panna veel
         }
 
     }
