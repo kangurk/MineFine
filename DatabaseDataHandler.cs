@@ -4,7 +4,7 @@ using Mono.Data.Sqlite;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace minefine
+namespace MineFine
 {
     public sealed class DatabaseDataHandler
     {
@@ -18,10 +18,11 @@ namespace minefine
         ObservableCollection<Ore> oreCount = new ObservableCollection<Ore>();
         int experience;
         int expLevel;
-        
+
+
         DatabaseDataHandler()
         {
-            
+
             if (!File.Exists(dbPath))
             {
                 Console.WriteLine("Creating database");
@@ -39,7 +40,7 @@ namespace minefine
                 "INSERT INTO Ores (oreName, oreCount) VALUES ('Coal_Ore', '0')",
                 "INSERT INTO Ores (oreName, oreCount) VALUES ('Mithril_Ore', '0')",
                 "INSERT INTO Ores (oreName, oreCount) VALUES ('Adamantite_Ore', '0')",
-                "INSERT INTO Ores (oreName, oreCount) VALUES ('Runite', '0')"};
+                "INSERT INTO Ores (oreName, oreCount) VALUES ('Runite_Ore', '0')"};
                 connection = new SqliteConnection("Data Source=" + dbPath);
                 connection.Open();
 
@@ -54,7 +55,7 @@ namespace minefine
                 Console.WriteLine("Database already exists");
                 // Open connection to existing database file
                 connection = new SqliteConnection("Data Source=" + dbPath);
-                
+
             }
         }
 
@@ -73,7 +74,7 @@ namespace minefine
                 }
             }
         }
-        
+
         /// <summary>
         /// Execute a sql command that isn't supposed to return anything, ex: UPDATE, INSERT, CREATE etc (no connection opening or closing)
         /// </summary>
@@ -86,30 +87,40 @@ namespace minefine
                 var r = contents.ExecuteNonQuery();
             }
         }
-        /// <summary>
-        /// Gets the stored data from the local database (prob vahetan nime ära millalgi xd)
-        /// </summary>
-        public void getDataTest()
+        private void getOreData()
         {
-            connection.Open();
             using (var contents = connection.CreateCommand())
             {
                 contents.CommandText = "SELECT * from Ores";
                 var r = contents.ExecuteReader();
                 Console.WriteLine("Reading data");
-                while (r.Read()) { 
-                    Console.WriteLine("oreName = {0} oreCount = {1}",r["oreName"].ToString(), Convert.ToInt32(r["oreCount"].ToString()));
+                while (r.Read())
+                {
+                    Console.WriteLine("oreName = {0} oreCount = {1}", r["oreName"].ToString(), Convert.ToInt32(r["oreCount"].ToString()));
                     oreCount.Add(new Ore(r["oreName"].ToString(), r["oreName"].ToString(), Convert.ToInt32(r["oreCount"].ToString())));
                 }
             }
-            connection.Close();
         }
         /// <summary>
         /// Gets the stored data from the local database (prob vahetan nime ära millalgi xd)
         /// </summary>
-        public int getExp()
+        public Tuple<int,int> getDataFromDatabase()
         {
             connection.Open();
+
+            getOreData();
+            getExp();
+            getExpLevel();
+
+            connection.Close();
+
+            return Tuple.Create(experience, expLevel);
+        }
+        /// <summary>
+        /// Gets the stored data from the local database (prob vahetan nime ära millalgi xd)
+        /// </summary>
+        private void getExp()
+        {
             using (var contents = connection.CreateCommand())
             {
                 contents.CommandText = "SELECT experience from Exp";
@@ -121,12 +132,9 @@ namespace minefine
                     experience = Convert.ToInt32(r["experience"].ToString());
                 }
             }
-            connection.Close();
-            return experience;
         }
-         public int getexpLevel()
+        private void getExpLevel()
         {
-            connection.Open();
             using (var contents = connection.CreateCommand())
             {
                 contents.CommandText = "SELECT expLevel from Exp";
@@ -138,8 +146,6 @@ namespace minefine
                     expLevel = Convert.ToInt32(r["expLevel"].ToString());
                 }
             }
-            connection.Close();
-            return expLevel;
         }
 
         /// <summary>
@@ -150,32 +156,22 @@ namespace minefine
         {
             return oreCount;
         }
+
         /// <summary>
-        /// Saves the Ore data to the local database
+        /// Saves Data to database (exp, level, ore amounts)
         /// </summary>
-        public void saveOreData()
+        /// <param name="exp">player experience</param>
+        /// <param name="explevel"> player level</param>
+        public void saveDataDatabase(int exp, int explevel)
         {
             connection.Open();
+            executeCommand("UPDATE Exp SET experience ='" + exp + "', expLevel ='"+ explevel+"' ;");
             foreach (var item in oreCount)
             {
                 executeCommand("UPDATE Ores SET oreCount =" + item.OreCount + " WHERE oreName = '" + item.Name + "';");
             }
             connection.Close();
         }
-        /// <summary>
-        /// Saves the Exp data to the local database
-        /// </summary>
-        public void saveExpData(int exp)
-        {
-            connection.Open();
-            executeCommand("UPDATE Exp SET experience ='" + exp + "' ;");
-            connection.Close();
-        }
-        public void saveexpLevel(int expLevel)
-        {
-            connection.Open();
-            executeCommand("UPDATE Exp SET expLevel ='" + expLevel + "' ;");
-            connection.Close();
-        }
+     
     }
 }
