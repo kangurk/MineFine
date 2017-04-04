@@ -92,8 +92,6 @@ namespace minefine
 
         private void levelUp()
         {
-            //var levelupText = FindViewById<TextView>(Resource.Id.levelupText);
-            //levelupText.Text = "You've achieved level " + expLevel.ToString();
             var alert = new AlertDialog.Builder(this);
             alert.SetView(LayoutInflater.Inflate(Resource.Layout.levelUp, null));
             alert.Create().Show();
