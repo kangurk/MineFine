@@ -171,6 +171,11 @@ namespace minefine
             executeCommand("UPDATE Exp SET experience ='" + exp + "' ;");
             connection.Close();
         }
-
+        public void saveexpLevel(int expLevel)
+        {
+            connection.Open();
+            executeCommand("UPDATE Exp SET expLevel ='" + expLevel + "' ;");
+            connection.Close();
+        }
     }
 }
