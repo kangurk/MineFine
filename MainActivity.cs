@@ -17,6 +17,9 @@ namespace MineFine
         int expLevel = 1;
         double nextLevel = 83;
         int cooldownSeconds = 5;
+        string positive;
+        string negative;
+        string question;
 
         //class on padlockitud, et ainult 1 instance saab sellest olla
         DatabaseDataHandler databaseDataHandler = DatabaseDataHandler.Instance;
@@ -79,13 +82,55 @@ namespace MineFine
         }
         private void randomEvents()
         {
+            List<String> events = new List<String>();
+            events.Add("Genie");
+            events.Add("Surprise exam");
+            events.Add("Frog");
+            events.Add("Quiz");
+            Random npcChance = new Random();
+            var chance1 = npcChance.Next(1, 4);
             Java.Util.Random eventChance = new Java.Util.Random();
-            var chance = eventChance.NextInt(100);
+            var chance = eventChance.NextInt(10);
             if (chance == 1)
             {
-                var alert = new AlertDialog.Builder(this);
-                alert.SetView(LayoutInflater.Inflate(Resource.Layout.RandomEvent, null));
-                alert.Create().Show();
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.SetTitle("RandomEvent!!");
+                switch (events[chance1 - 1])
+                {
+                    case "Genie":
+                        alert.SetIcon(Resource.Drawable.genie);
+                        positive = "Rub the lamp!";
+                        negative = "Dismiss genie!";
+                        question = "A genie has appeared, rub the lamp for a fortune";
+                        break;
+                    case "Surprise exam":
+                        alert.SetIcon(Resource.Drawable.exam);
+                        positive = "Mine Fine";
+                        negative = "Ore Clicker";
+                        question = "Which of the is the correct pronunciation";
+                        break;
+                    case "Frog":
+                        alert.SetIcon(Resource.Drawable.frog);
+                        positive = "Of course!";
+                        negative = "Ew, no!";
+                        question = "Will you kiss the frog?";
+                        break;
+                    case "Quiz":
+                        alert.SetIcon(Resource.Drawable.quiz);
+                        positive = "No";
+                        negative = "Yes";
+                        question = "Can you land on sun during the night?";
+                        break;
+                }
+                alert.SetMessage(question);
+                alert.SetPositiveButton(positive, (senderAlert, args) => {
+                    //auhind kui õigesti vastad
+                });
+                alert.SetNegativeButton(negative, (senderAlert, args) => {
+                    //auhind kui valesti vastad
+                });
+                Dialog dialog = alert.Create();
+                dialog.Show();
             }
         }
 
