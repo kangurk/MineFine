@@ -172,6 +172,16 @@ namespace MineFine
             }
             connection.Close();
         }
+         public void saveDataDatabaseOre(string query)
+        {
+            connection.Open();
+            using (var contents = connection.CreateCommand())
+            {
+                contents.CommandText = query;
+                var r = contents.ExecuteNonQuery();
+            }
+            connection.Close();
+        }
      
     }
 }
