@@ -13,12 +13,21 @@ namespace MineFine
         string dbPath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.Personal),
         "Ores.db3");
-
+        Dictionary<string, int> imageResources = new Dictionary<string, int>() {
+            {"Copper_Ore",Resource.Drawable.Copper_Ore},
+            {"Tin_Ore",Resource.Drawable.Tin_Ore},
+            {"Iron_Ore",Resource.Drawable.Iron_Ore},
+            {"Silver_Ore",Resource.Drawable.Silver_Ore},
+            {"Mithril_Ore",Resource.Drawable.Mithril_Ore},
+            {"Adamantite_Ore",Resource.Drawable.Adamantite_Ore},
+            {"Runite_Ore",Resource.Drawable.Runite_Ore},
+            {"Coal_Ore",Resource.Drawable.Coal_Ore}};
         SqliteConnection connection;
         ObservableCollection<Ore> oreCount = new ObservableCollection<Ore>();
         int experience;
         int expLevel;
-
+        string currentOre = "Copper_Ore";
+        int currency = 0;
 
         DatabaseDataHandler()
         {
@@ -30,17 +39,17 @@ namespace MineFine
                 SqliteConnection.CreateFile(dbPath);
 
                 var commands = new[] {
-                "CREATE TABLE Exp (experience INTEGER, expLevel INTEGER);",
-                "INSERT INTO Exp (experience, expLevel) VALUES ('0','1')",
-                "CREATE TABLE Ores (oreName VARCHAR(30), oreCount INTEGER);",
-                "INSERT INTO Ores (oreName, oreCount) VALUES ('Copper_Ore', '0')",
-                "INSERT INTO Ores (oreName, oreCount) VALUES ('Tin_Ore', '0')",
-                "INSERT INTO Ores (oreName, oreCount) VALUES ('Iron_Ore', '0')",
-                "INSERT INTO Ores (oreName, oreCount) VALUES ('Silver_Ore', '0')",
-                "INSERT INTO Ores (oreName, oreCount) VALUES ('Coal_Ore', '0')",
-                "INSERT INTO Ores (oreName, oreCount) VALUES ('Mithril_Ore', '0')",
-                "INSERT INTO Ores (oreName, oreCount) VALUES ('Adamantite_Ore', '0')",
-                "INSERT INTO Ores (oreName, oreCount) VALUES ('Runite_Ore', '0')"};
+                "CREATE TABLE UserData (experience INTEGER, expLevel INTEGER, currency INTEGER);",
+                "INSERT INTO UserData (experience, expLevel,currency) VALUES ('0','1','1')",
+                "CREATE TABLE Ores (oreName VARCHAR(30), oreCount INTEGER, oreCurrencyValue INTEGER, oreExpRate INTEGER);",
+                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate) VALUES ('Copper_Ore','0','10','10')",
+                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate) VALUES ('Tin_Ore', '0', '17', '17')",
+                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate) VALUES ('Iron_Ore', '0', '30', '30')",
+                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate) VALUES ('Silver_Ore', '0', '40', '40')",
+                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate) VALUES ('Coal_Ore', '0', '50', '50')",
+                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate) VALUES ('Mithril_Ore', '0', '80', '80')",
+                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate) VALUES ('Adamantite_Ore', '0', '95', '95')",
+                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate) VALUES ('Runite_Ore', '0', '125', '125')"};
                 connection = new SqliteConnection("Data Source=" + dbPath);
                 connection.Open();
 
@@ -75,6 +84,8 @@ namespace MineFine
             }
         }
 
+
+
         /// <summary>
         /// Execute a sql command that isn't supposed to return anything, ex: UPDATE, INSERT, CREATE etc (no connection opening or closing)
         /// </summary>
@@ -93,11 +104,10 @@ namespace MineFine
             {
                 contents.CommandText = "SELECT * from Ores";
                 var r = contents.ExecuteReader();
-                Console.WriteLine("Reading data");
                 while (r.Read())
                 {
-                    Console.WriteLine("oreName = {0} oreCount = {1}", r["oreName"].ToString(), Convert.ToInt32(r["oreCount"].ToString()));
-                    oreCount.Add(new Ore(r["oreName"].ToString(), r["oreName"].ToString(), Convert.ToInt32(r["oreCount"].ToString())));
+                    oreCount.Add(new Ore(r["oreName"].ToString(), imageResources[r["oreName"].ToString()], Convert.ToInt32(r["oreCount"].ToString()),
+                        Convert.ToInt32(r["oreCurrencyValue"].ToString()), Convert.ToInt32(r["oreExpRate"].ToString())));
                 }
             }
         }
@@ -111,7 +121,7 @@ namespace MineFine
             getOreData();
             getExp();
             getExpLevel();
-
+            getCurrency();
             connection.Close();
 
             return Tuple.Create(experience, expLevel);
@@ -123,7 +133,7 @@ namespace MineFine
         {
             using (var contents = connection.CreateCommand())
             {
-                contents.CommandText = "SELECT experience from Exp";
+                contents.CommandText = "SELECT experience from userData";
                 var r = contents.ExecuteReader();
                 Console.WriteLine("Reading data");
                 while (r.Read())
@@ -133,11 +143,24 @@ namespace MineFine
                 }
             }
         }
+        private void getCurrency()
+        {
+            using (var contents = connection.CreateCommand())
+            {
+                contents.CommandText = "SELECT currency from userData";
+                var r = contents.ExecuteReader();
+                Console.WriteLine("Reading data");
+                while (r.Read())
+                {
+                    Currency = Convert.ToInt32(r["currency"].ToString());
+                }
+            }
+        }
         private void getExpLevel()
         {
             using (var contents = connection.CreateCommand())
             {
-                contents.CommandText = "SELECT expLevel from Exp";
+                contents.CommandText = "SELECT expLevel from userData";
                 var r = contents.ExecuteReader();
                 Console.WriteLine("Reading data");
                 while (r.Read())
@@ -165,14 +188,14 @@ namespace MineFine
         public void saveDataDatabase(int exp, int explevel)
         {
             connection.Open();
-            executeCommand("UPDATE Exp SET experience ='" + exp + "', expLevel ='"+ explevel+"' ;");
+            executeCommand("UPDATE userData SET experience ='" + exp + "', expLevel ='"+ explevel+"' ;");
             foreach (var item in oreCount)
             {
                 executeCommand("UPDATE Ores SET oreCount =" + item.OreCount + " WHERE oreName = '" + item.Name + "';");
             }
             connection.Close();
         }
-         public void saveDataDatabaseOre(string query)
+        public void saveDataDatabaseOre(string query)
         {
             connection.Open();
             using (var contents = connection.CreateCommand())
@@ -182,6 +205,9 @@ namespace MineFine
             }
             connection.Close();
         }
-     
+
+        public string CurrentOre { get => currentOre; set => currentOre = value; }
+        public int Currency { get => currency; set => currency = value; }
+
     }
 }
