@@ -1,15 +1,20 @@
-namespace minefine
+namespace MineFine
 {
     public class Ore
     {
         public string Name { get; set; }
-        public string Image { get; set; }
+        public int Image { get; set; }
         public int OreCount { get; set; }
-        public Ore(string name, string image, int orecount)
+        public int OreCurrencyValue { get; set; }
+
+        public int OreExpRate { get; set; }
+        public Ore(string name, int image, int orecount, int orecurrencyvalue, int oreexprate)
         {
             this.Name = name;
-            this.Image = name;
+            this.Image = image;
             this.OreCount = orecount;
+            this.OreCurrencyValue = orecurrencyvalue;
+            this.OreExpRate = oreexprate;
         }
     }
 }
