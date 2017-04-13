@@ -26,8 +26,6 @@ namespace MineFine
         ObservableCollection<Ore> oreCount = new ObservableCollection<Ore>();
         int experience;
         int expLevel;
-        string currentOre = "Copper_Ore";
-        int currency = 0;
 
         DatabaseDataHandler()
         {
@@ -206,8 +204,8 @@ namespace MineFine
             connection.Close();
         }
 
-        public string CurrentOre { get => currentOre; set => currentOre = value; }
-        public int Currency { get => currency; set => currency = value; }
+        public string CurrentOre { get; set; }
+        public int Currency { get; set ; }
 
     }
 }
