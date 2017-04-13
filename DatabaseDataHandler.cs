@@ -60,6 +60,7 @@ namespace MineFine
             else
             {
                 Console.WriteLine("Database already exists");
+                CurrentOre = "Copper_Ore";
                 // Open connection to existing database file
                 connection = new SqliteConnection("Data Source=" + dbPath);
 
