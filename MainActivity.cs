@@ -23,7 +23,7 @@ namespace MineFine
         //class on padlockitud, et ainult 1 instance saab sellest olla
         DatabaseDataHandler databaseDataHandler = DatabaseDataHandler.Instance;
         Ore currentActiveOre;
-        ObservableCollection<Ore> oreCount;
+        
         Button toShop;
         ImageView mainImage;
         TextView expHour;
@@ -149,14 +149,14 @@ namespace MineFine
 
         }
         /// <summary>
-        /// gets data from local database and sets all that data to the observablecollection, oreCount is that observablecollection
+        /// gets data from local database
         /// </summary>
         private void initializeDatabase()
         {
             Tuple<int,int> values = databaseDataHandler.getDataFromDatabase();
             experience = values.Item1;
             expLevel = values.Item2;
-            oreCount = databaseDataHandler.getObservable();
+            
 
         }
         protected override void OnPause()
@@ -172,7 +172,7 @@ namespace MineFine
         protected override void OnResume()
         {
             base.OnResume();
-            currentActiveOre = oreCount.Select((p) => new { Ore = p }).Where(p => p.Ore.Name == databaseDataHandler.CurrentOre).First().Ore;
+            currentActiveOre = databaseDataHandler.getObservable().Select((p) => new { Ore = p }).Where(p => p.Ore.Name == databaseDataHandler.CurrentOre).First().Ore;
             mainImage.SetImageResource(currentActiveOre.Image);
         }
 
