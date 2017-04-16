@@ -33,6 +33,8 @@ namespace MineFine
         {
             base.OnCreate(bundle);
 
+            RequestWindowFeature(WindowFeatures.NoTitle);
+
             SetContentView(Resource.Layout.Main);
             toShop = FindViewById<Button>(Resource.Id.toShop);
             mainImage = FindViewById<ImageView>(Resource.Id.mainImage);
