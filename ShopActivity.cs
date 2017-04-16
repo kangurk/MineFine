@@ -16,15 +16,32 @@ namespace MineFine
         TextView Currency;
         ListView shopListView;
         OreAdapter oreAdapter;
+        int currentPickaxe = 0;
+        Dictionary<int, string> pickaxes = new Dictionary<int, string>()
+        {
+            {0, "Bronze pickaxe"},
+            {1, "Iron pickaxe"},
+            {2, "Steel pickaxe"},
+            {3, "Black pickaxe"},
+            {4, "Mithril pickaxe"},
+            {5, "Adamant pickaxe"},
+            {6, "Rune pickaxe"},
+            {7, "Dragon pickaxe"},
+            {8, "3rd age pickaxe"}
+        };
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
+            RequestWindowFeature(WindowFeatures.NoTitle);
+    
             oreList = databaseDataHandler.getObservable();
 
             SetContentView(Resource.Layout.Shop);
             Currency = FindViewById<TextView>(Resource.Id.gp);
             Currency.Text = databaseDataHandler.Currency.ToString();
+            Pickaxe = FindViewById<Button>(Resource.Id.Upgrade);
+            pickaxeText();
 
             oreAdapter = new OreAdapter(this, oreList);
            
@@ -32,6 +49,14 @@ namespace MineFine
             shopListView.Adapter = oreAdapter;
             shopListView.ItemClick += ShopListView_ItemClick;
 
+            Pickaxe.Click += delegate
+                {
+                     if (databaseDataHandler.Currency == (currentPickaxe * 10000))
+                     {
+                            currentPickaxe++;
+                            pickaxeText();
+                     }
+                };
             
         }
 
@@ -63,7 +88,13 @@ namespace MineFine
             newFragment.Show(ft, "shopDialog");
             
         }
-
+    private void pickaxeText()
+        {
+            if (currentPickaxe < 8)
+                Pickaxe.Text = "Upgrade pickaxe to " + pickaxes[currentPickaxe + 1];
+            else
+                Pickaxe.Text = "Pickaxe fully upgraded!";
+        }
 
     }
     public class DialogEventArgs : EventArgs
