@@ -13,6 +13,7 @@ namespace MineFine
     {
         DatabaseDataHandler databaseDataHandler = DatabaseDataHandler.Instance;
         TextView Currency;
+        Button Pickaxe;
         ListView shopListView;
         OreAdapter oreAdapter;
         int currentPickaxe = 0;
