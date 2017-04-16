@@ -12,7 +12,6 @@ namespace MineFine
     public class ShopActivity : Activity
     {
         DatabaseDataHandler databaseDataHandler = DatabaseDataHandler.Instance;
-        ObservableCollection<Ore> oreList;
         TextView Currency;
         ListView shopListView;
         OreAdapter oreAdapter;
@@ -34,8 +33,6 @@ namespace MineFine
             base.OnCreate(savedInstanceState);
 
             RequestWindowFeature(WindowFeatures.NoTitle);
-    
-            oreList = databaseDataHandler.getObservable();
 
             SetContentView(Resource.Layout.Shop);
             Currency = FindViewById<TextView>(Resource.Id.gp);
@@ -43,7 +40,7 @@ namespace MineFine
             Pickaxe = FindViewById<Button>(Resource.Id.Upgrade);
             pickaxeText();
 
-            oreAdapter = new OreAdapter(this, oreList);
+            oreAdapter = new OreAdapter(this, databaseDataHandler.getObservable());
            
             shopListView = FindViewById<ListView>(Resource.Id.shopMenu);
             shopListView.Adapter = oreAdapter;
@@ -51,7 +48,7 @@ namespace MineFine
 
             Pickaxe.Click += delegate
                 {
-                     if (databaseDataHandler.Currency == (currentPickaxe * 10000))
+                     if (databaseDataHandler.Currency >= (currentPickaxe * 10000))
                      {
                             currentPickaxe++;
                             pickaxeText();
@@ -62,10 +59,10 @@ namespace MineFine
 
         private void ShopListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            Toast.MakeText(this, oreList[e.Position].Name, ToastLength.Short).Show();
+            Toast.MakeText(this, databaseDataHandler.getObservable()[e.Position].Name, ToastLength.Short).Show();
             Bundle args = new Bundle();
-            args.PutString("oreName", oreList[e.Position].Name);
-            args.PutString("oreCount", oreList[e.Position].OreCount.ToString());
+            args.PutString("oreName", databaseDataHandler.getObservable()[e.Position].Name);
+            args.PutString("oreCount", databaseDataHandler.getObservable()[e.Position].OreCount.ToString());
             createFragment(args,e.Position);
             
         }
@@ -83,7 +80,7 @@ namespace MineFine
             ft.AddToBackStack(null);
             // Create and show the dialog.
             DialogFragmentCustom newFragment = DialogFragmentCustom.NewInstance(args);
-            newFragment.Dismissed += (s, e) => { Currency.Text = e.Text; oreList[pos].OreCount = 0; newFragment.Dismiss(); oreAdapter.NotifyDataSetChanged(); };
+            newFragment.Dismissed += (s, e) => { Currency.Text = e.Text; databaseDataHandler.getObservable()[pos].OreCount = 0; newFragment.Dismiss(); oreAdapter.NotifyDataSetChanged(); };
             //Add fragment
             newFragment.Show(ft, "shopDialog");
             
