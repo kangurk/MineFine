@@ -26,6 +26,7 @@ namespace MineFine
         ObservableCollection<Ore> oreCount = new ObservableCollection<Ore>();
         int experience;
         int expLevel;
+        int nextLevel;
 
         DatabaseDataHandler()
         {
@@ -37,8 +38,8 @@ namespace MineFine
                 SqliteConnection.CreateFile(dbPath);
 
                 var commands = new[] {
-                "CREATE TABLE UserData (experience INTEGER, expLevel INTEGER, currency INTEGER);",
-                "INSERT INTO UserData (experience, expLevel,currency) VALUES ('0','1','1')",
+                "CREATE TABLE UserData (experience INTEGER, expLevel INTEGER, currency INTEGER,nextLevel INTEGER);",
+                "INSERT INTO UserData (experience, expLevel,currency,nextLevel) VALUES ('0','1','1','83')",
                 "CREATE TABLE Ores (oreName VARCHAR(30), oreCount INTEGER, oreCurrencyValue INTEGER, oreExpRate INTEGER);",
                 "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate) VALUES ('Copper_Ore','0','10','10')",
                 "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate) VALUES ('Tin_Ore', '0', '17', '17')",
@@ -169,6 +170,20 @@ namespace MineFine
                 }
             }
         }
+         private void getNextLevel()
+        {
+            using (var contents = connection.CreateCommand())
+            {
+                contents.CommandText = "SELECT nextLevel from userData";
+                var r = contents.ExecuteReader();
+                Console.WriteLine("Reading data");
+                while (r.Read())
+                {
+                    Console.WriteLine("nextLevel = {0}", Convert.ToInt32(r["nextLevel"].ToString()));
+                    nextLevel = Convert.ToInt32(r["nextLevel"].ToString());
+                }
+            }
+        }
 
         /// <summary>
         /// returns: Basically a list of Ore() Classes
@@ -184,10 +199,11 @@ namespace MineFine
         /// </summary>
         /// <param name="exp">player experience</param>
         /// <param name="explevel"> player level</param>
-        public void saveDataDatabase(int exp, int explevel)
+        /// <param name="nextlevel"> player experience to next level</param>
+        public void saveDataDatabase(int exp, int explevel, int nextlevel)
         {
             connection.Open();
-            executeCommand("UPDATE userData SET experience ='" + exp + "', expLevel ='"+ explevel+"' ;");
+            executeCommand("UPDATE userData SET experience ='" + exp + "', expLevel ='" + explevel + "', nextLevel ='" + nextlevel + "' ;");
             foreach (var item in oreCount)
             {
                 executeCommand("UPDATE Ores SET oreCount =" + item.OreCount + " WHERE oreName = '" + item.Name + "';");
