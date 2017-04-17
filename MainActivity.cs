@@ -23,6 +23,7 @@ namespace MineFine
         //class on padlockitud, et ainult 1 instance saab sellest olla
         DatabaseDataHandler databaseDataHandler = DatabaseDataHandler.Instance;
         Ore currentActiveOre;
+        ObservableCollection<Ore> oreCount;
         
         Button toShop;
         ImageView mainImage;
@@ -38,7 +39,6 @@ namespace MineFine
             SetContentView(Resource.Layout.Main);
             toShop = FindViewById<Button>(Resource.Id.toShop);
             mainImage = FindViewById<ImageView>(Resource.Id.mainImage);
-            expHour = FindViewById<TextView>(Resource.Id.expHour);
             totalExp = FindViewById<TextView>(Resource.Id.totalExp);
             totalLevel = FindViewById<TextView>(Resource.Id.Level);
 
@@ -72,7 +72,8 @@ namespace MineFine
                 double temp = nextLevel * 1.1;
                 double together = nextLevel + temp;
                 expLevel += 1;
-                nextLevel = together;
+                nextLevel = Convert.ToInt32(together);
+                levelUp();
             }
             return 0;
         }
@@ -134,8 +135,6 @@ namespace MineFine
 
         private void levelUp()
         {
-            //var levelupText = FindViewById<TextView>(Resource.Id.levelupText);
-            //levelupText.Text = "You've achieved level " + expLevel.ToString();
             var alert = new AlertDialog.Builder(this);
             alert.SetView(LayoutInflater.Inflate(Resource.Layout.levelUp, null));
             alert.Create().Show();
@@ -153,21 +152,21 @@ namespace MineFine
         /// </summary>
         private void initializeDatabase()
         {
-            Tuple<int,int> values = databaseDataHandler.getDataFromDatabase();
+            Tuple<int,int,int> values = databaseDataHandler.getDataFromDatabase();
             experience = values.Item1;
             expLevel = values.Item2;
-            
-
+            oreCount = databaseDataHandler.getObservable();
+            nextLevel = values.Item3;
         }
         protected override void OnPause()
         {
             base.OnPause();
-            databaseDataHandler.saveDataDatabase(experience, expLevel); // ei tea millal(/)kuhu seda panna veel
+            databaseDataHandler.saveDataDatabase(experience, expLevel, nextLevel); // ei tea millal(/)kuhu seda panna veel
         }
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            databaseDataHandler.saveDataDatabase(experience, expLevel); // ei tea millal(/)kuhu seda panna veel
+            databaseDataHandler.saveDataDatabase(experience, expLevel, nextLevel);// ei tea millal(/)kuhu seda panna veel
         }
         protected override void OnResume()
         {
