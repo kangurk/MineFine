@@ -28,13 +28,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/totalExp"
             android:layout_alignParentLeft="true" />
-        <TextView
-            android:text="@string/expHour"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/expHour"
-            android:layout_alignParentRight="true" />
     </RelativeLayout>
     <TextView
         android:text="Your current level is 1"
