@@ -13,6 +13,7 @@ namespace MineFine
         string dbPath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.Personal),
         "Ores.db3");
+        
         Dictionary<string, int> imageResources = new Dictionary<string, int>() {
             {"Copper_Ore",Resource.Drawable.Copper_Ore},
             {"Tin_Ore",Resource.Drawable.Tin_Ore},
@@ -23,32 +24,29 @@ namespace MineFine
             {"Runite_Ore",Resource.Drawable.Runite_Ore},
             {"Coal_Ore",Resource.Drawable.Coal_Ore}};
         SqliteConnection connection;
-        ObservableCollection<Ore> oreCount = new ObservableCollection<Ore>();
-        int experience;
-        int expLevel;
-        int nextLevel;
+
+
 
         DatabaseDataHandler()
         {
 
             if (!File.Exists(dbPath))
             {
-                Console.WriteLine("Creating database");
                 // Need to create the database before seeding it with some data
                 SqliteConnection.CreateFile(dbPath);
 
                 var commands = new[] {
-                "CREATE TABLE UserData (experience INTEGER, expLevel INTEGER, currency INTEGER,nextLevel INTEGER);",
-                "INSERT INTO UserData (experience, expLevel,currency,nextLevel) VALUES ('0','1','1','83')",
-                "CREATE TABLE Ores (oreName VARCHAR(30), oreCount INTEGER, oreCurrencyValue INTEGER, oreExpRate INTEGER);",
-                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate) VALUES ('Copper_Ore','0','10','10')",
-                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate) VALUES ('Tin_Ore', '0', '17', '17')",
-                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate) VALUES ('Iron_Ore', '0', '30', '30')",
-                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate) VALUES ('Silver_Ore', '0', '40', '40')",
-                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate) VALUES ('Coal_Ore', '0', '50', '50')",
-                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate) VALUES ('Mithril_Ore', '0', '80', '80')",
-                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate) VALUES ('Adamantite_Ore', '0', '95', '95')",
-                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate) VALUES ('Runite_Ore', '0', '125', '125')"};
+                "CREATE TABLE UserData (experience INTEGER, expLevel INTEGER, currency INTEGER, currentPickaxe INTEGER);",
+                "INSERT INTO UserData (experience, expLevel,currency,currentPickaxe) VALUES ('0','1','1','0')",
+                "CREATE TABLE Ores (oreName VARCHAR(30), oreCount INTEGER, oreCurrencyValue INTEGER, oreExpRate INTEGER, isOreUnlocked bit);",
+                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate, isOreUnlocked) VALUES ('Copper_Ore','0','10','10','1')",
+                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate, isOreUnlocked) VALUES ('Tin_Ore', '0', '17', '17','0')",
+                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate, isOreUnlocked) VALUES ('Iron_Ore', '0', '30', '30','0')",
+                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate, isOreUnlocked) VALUES ('Silver_Ore', '0', '40', '40','0')",
+                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate, isOreUnlocked) VALUES ('Coal_Ore', '0', '50', '50','0')",
+                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate, isOreUnlocked) VALUES ('Mithril_Ore', '0', '80', '80','0')",
+                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate, isOreUnlocked) VALUES ('Adamantite_Ore', '0', '95', '95','0')",
+                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate, isOreUnlocked) VALUES ('Runite_Ore', '0', '125', '125','0')"};
                 connection = new SqliteConnection("Data Source=" + dbPath);
                 connection.Open();
 
@@ -60,8 +58,7 @@ namespace MineFine
             }
             else
             {
-                Console.WriteLine("Database already exists");
-                CurrentOre = "Copper_Ore";
+
                 // Open connection to existing database file
                 connection = new SqliteConnection("Data Source=" + dbPath);
 
@@ -106,25 +103,27 @@ namespace MineFine
                 var r = contents.ExecuteReader();
                 while (r.Read())
                 {
-                    oreCount.Add(new Ore(r["oreName"].ToString(), imageResources[r["oreName"].ToString()], Convert.ToInt32(r["oreCount"].ToString()),
-                        Convert.ToInt32(r["oreCurrencyValue"].ToString()), Convert.ToInt32(r["oreExpRate"].ToString())));
+                    OreObservableList.Add(new Ore(r["oreName"].ToString(), imageResources[r["oreName"].ToString()], Convert.ToInt32(r["oreCount"].ToString()),
+                        Convert.ToInt32(r["oreCurrencyValue"].ToString()), Convert.ToInt32(r["oreExpRate"].ToString()),(bool)r["isOreUnlocked"]));
                 }
             }
         }
         /// <summary>
         /// Gets the stored data from the local database (prob vahetan nime ära millalgi xd)
         /// </summary>
-        public Tuple<int,int> getDataFromDatabase()
+        public void initializeData()
         {
+            //init some values 
+            OreObservableList = new ObservableCollection<Ore>();
+            UserData = new User();
+            UserData.CurrentOre = "Copper_Ore";
             connection.Open();
-
             getOreData();
             getExp();
             getExpLevel();
             getCurrency();
+            getCurrentPickaxe();
             connection.Close();
-
-            return Tuple.Create(experience, expLevel);
         }
         /// <summary>
         /// Gets the stored data from the local database (prob vahetan nime ära millalgi xd)
@@ -139,7 +138,20 @@ namespace MineFine
                 while (r.Read())
                 {
                     Console.WriteLine("experience = {0}", Convert.ToInt32(r["experience"].ToString()));
-                    experience = Convert.ToInt32(r["experience"].ToString());
+                    UserData.Experience = Convert.ToInt32(r["experience"].ToString());
+                }
+            }
+        }
+        private void getCurrentPickaxe()
+        {
+            using (var contents = connection.CreateCommand())
+            {
+                contents.CommandText = "SELECT currentPickaxe from userData";
+                var r = contents.ExecuteReader();
+                while (r.Read())
+                {
+                    UserData.CurrentPickaxeIndex = Convert.ToInt32(r["currentPickaxe"].ToString());
+                    UserData.UserPickaxe = pickaxes[UserData.CurrentPickaxeIndex];
                 }
             }
         }
@@ -149,10 +161,9 @@ namespace MineFine
             {
                 contents.CommandText = "SELECT currency from userData";
                 var r = contents.ExecuteReader();
-                Console.WriteLine("Reading data");
                 while (r.Read())
                 {
-                    Currency = Convert.ToInt32(r["currency"].ToString());
+                    UserData.Currency = Convert.ToInt32(r["currency"].ToString());
                 }
             }
         }
@@ -162,67 +173,44 @@ namespace MineFine
             {
                 contents.CommandText = "SELECT expLevel from userData";
                 var r = contents.ExecuteReader();
-                Console.WriteLine("Reading data");
                 while (r.Read())
                 {
                     Console.WriteLine("expLevel = {0}", Convert.ToInt32(r["expLevel"].ToString()));
-                    expLevel = Convert.ToInt32(r["expLevel"].ToString());
+                    UserData.Level = Convert.ToInt32(r["expLevel"].ToString());
                 }
             }
         }
-         private void getNextLevel()
-        {
-            using (var contents = connection.CreateCommand())
-            {
-                contents.CommandText = "SELECT nextLevel from userData";
-                var r = contents.ExecuteReader();
-                Console.WriteLine("Reading data");
-                while (r.Read())
-                {
-                    Console.WriteLine("nextLevel = {0}", Convert.ToInt32(r["nextLevel"].ToString()));
-                    nextLevel = Convert.ToInt32(r["nextLevel"].ToString());
-                }
-            }
-        }
-
         /// <summary>
-        /// returns: Basically a list of Ore() Classes
+        /// Saves Data to database
         /// </summary>
-        /// <returns></returns>
-        public ObservableCollection<Ore> getObservable()
-        {
-            return oreCount;
-        }
-
-        /// <summary>
-        /// Saves Data to database (exp, level, ore amounts)
-        /// </summary>
-        /// <param name="exp">player experience</param>
-        /// <param name="explevel"> player level</param>
-        /// <param name="nextlevel"> player experience to next level</param>
-        public void saveDataDatabase(int exp, int explevel, int nextlevel)
+        public void saveDataDatabase()
         {
             connection.Open();
-            executeCommand("UPDATE userData SET experience ='" + exp + "', expLevel ='" + explevel + "', nextLevel ='" + nextlevel + "' ;");
-            foreach (var item in oreCount)
+            executeCommand("UPDATE userData SET experience ='" + UserData.Experience + "', expLevel ='" + UserData.Level + "', currency ='" + UserData.Currency + "', currentPickaxe ='" + UserData.UserPickaxe + "' ;");
+            foreach (var item in OreObservableList)
             {
-                executeCommand("UPDATE Ores SET oreCount =" + item.OreCount + " WHERE oreName = '" + item.Name + "';");
-            }
-            connection.Close();
-        }
-        public void saveDataDatabaseOre(string query)
-        {
-            connection.Open();
-            using (var contents = connection.CreateCommand())
-            {
-                contents.CommandText = query;
-                var r = contents.ExecuteNonQuery();
+                executeCommand("UPDATE Ores SET oreCount =" + item.OreCount + ", isOreUnlocked = " + Convert.ToByte(item.IsOreUnlockedByUser) + " WHERE oreName = '" + item.Name + "';");
             }
             connection.Close();
         }
 
-        public string CurrentOre { get; set; }
-        public int Currency { get; set ; }
+        public ObservableCollection<Ore> OreObservableList { get; set; }
+
+        public User UserData { get; set; }
+
+        public List<Pickaxe> pickaxes = new List<Pickaxe>()
+        {
+            {new Pickaxe("Bronze Pickaxe",1, 0)},
+            {new Pickaxe("Iron Pickaxe",2, 30000)},
+            {new Pickaxe("Steel Pickaxe",3, 50000)},
+            {new Pickaxe("Black Pickaxe",4, 70000)},
+            {new Pickaxe("Mithril Pickaxe",5, 90000)},
+            {new Pickaxe("Adamant Pickaxe",6, 110000)},
+            {new Pickaxe("Rune Pickaxe",7, 200000)},
+            {new Pickaxe("Dragon Pickaxe",8, 300000)},
+            {new Pickaxe("3rd age Pickaxe",10, 500000)}
+        };
 
     }
+
 }
