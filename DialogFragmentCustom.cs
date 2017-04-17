@@ -14,10 +14,11 @@ using System.Collections.ObjectModel;
 
 namespace MineFine
 {
-    
+
     public class DialogFragmentCustom : DialogFragment
     {
         DatabaseDataHandler databaseDataHandler = DatabaseDataHandler.Instance;
+        string btnText = "Buy";
         public static DialogFragmentCustom NewInstance(Bundle bundle)
         {
             DialogFragmentCustom fragment = new DialogFragmentCustom();
@@ -29,8 +30,9 @@ namespace MineFine
         {
             string oreName = Arguments.GetString("oreName");
             string oreCount = Arguments.GetString("oreCount");
-            int index = databaseDataHandler.getObservable().Select((p, i) => new { Ore = p, Index = i}).Where(p => p.Ore.Name == oreName).First().Index;
-            ObservableCollection<Ore> oreList = databaseDataHandler.getObservable();
+            btnText = Arguments.GetString("leftBtnText");
+            int index = databaseDataHandler.OreObservableList.Select((p, i) => new { Ore = p, Index = i }).Where(p => p.Ore.Name == oreName).First().Index;
+
 
             //custom view for this Fragment
             View view = inflater.Inflate(Resource.Layout.CustomDialog, container, false);
@@ -38,19 +40,36 @@ namespace MineFine
             view.FindViewById<TextView>(Resource.Id.midText).Text = oreCount;
 
             Button button = view.FindViewById<Button>(Resource.Id.btnLeft);
+            button.Text = btnText;
             button.Click += delegate {
-                databaseDataHandler.CurrentOre = oreName;
-                Dismiss();
+                if(btnText == "Buy")
+                {
+                    if(databaseDataHandler.UserData.Currency >= databaseDataHandler.OreObservableList[index].OreCurrencyValue * 1500 * index)
+                    {
+                        databaseDataHandler.UserData.CurrentOre = oreName;
+                        databaseDataHandler.OreObservableList[index].IsOreUnlockedByUser = true;
+                    }
+                    else
+                    {
+                        Toast.MakeText(Activity, "You need " +( databaseDataHandler.OreObservableList[index].OreCurrencyValue * 1500 * index) + " gold coins to buy this item", ToastLength.Short).Show();
+                    }
+                }
+                else
+                {
+                    databaseDataHandler.UserData.CurrentOre = oreName;
+                }
                 
+                Dismiss();
+
             };
 
             Button button2 = view.FindViewById<Button>(Resource.Id.btnRight);
             button2.Click += delegate {
-                
-                databaseDataHandler.Currency += oreList[index].OreCurrencyValue * oreList[index].OreCount;
-                oreList[index].OreCount = 0;
 
-                Dismissed?.Invoke(this, new DialogEventArgs { Text = databaseDataHandler.Currency.ToString() });
+                databaseDataHandler.UserData.Currency += databaseDataHandler.OreObservableList[index].OreCurrencyValue * databaseDataHandler.OreObservableList[index].OreCount;
+                databaseDataHandler.OreObservableList[index].OreCount = 0;
+
+                Dismissed?.Invoke(this, new DialogEventArgs { Text = databaseDataHandler.UserData.Currency.ToString() });
 
             };
 
@@ -58,5 +77,5 @@ namespace MineFine
         }
         public event DialogEventHandler Dismissed;
     }
- 
+
 }
