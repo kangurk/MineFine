@@ -30,6 +30,19 @@ namespace MineFine
             {7, "Dragon pickaxe"},
             {8, "3rd age pickaxe"}
         };
+        //cooldown currentPickaxe järgi
+        Dictionary<int, double> pickaxesCooldown = new Dictionary<int, double>()
+        {
+            {0, 4},
+            {1, 3.75},
+            {2, 3.5},
+            {3, 3.25},
+            {4, 3},
+            {5, 2.75},
+            {6, 2.5},
+            {7, 2.25},
+            {8, 2}
+        };
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -38,7 +51,7 @@ namespace MineFine
 
             SetContentView(Resource.Layout.Shop);
             Currency = FindViewById<TextView>(Resource.Id.gp);
-            Currency.Text = databaseDataHandler.Currency.ToString();
+            Currency.Text = "You currently have " + databaseDataHandler.Currency.ToString() + " gp";
             Pickaxe = FindViewById<Button>(Resource.Id.Upgrade);
             pickaxeText();
 
@@ -50,7 +63,7 @@ namespace MineFine
 
             Pickaxe.Click += delegate
                 {
-                     if (databaseDataHandler.Currency >= (currentPickaxe * 10000))
+                     (databaseDataHandler.Currency >= ((currentPickaxe + 1) * 10000))
                      {
                             currentPickaxe++;
                             pickaxeText();
