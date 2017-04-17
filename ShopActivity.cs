@@ -17,32 +17,7 @@ namespace MineFine
         Button Pickaxe;
         ListView shopListView;
         OreAdapter oreAdapter;
-        int currentPickaxe = 0;
-        Dictionary<int, string> pickaxes = new Dictionary<int, string>()
-        {
-            {0, "Bronze pickaxe"},
-            {1, "Iron pickaxe"},
-            {2, "Steel pickaxe"},
-            {3, "Black pickaxe"},
-            {4, "Mithril pickaxe"},
-            {5, "Adamant pickaxe"},
-            {6, "Rune pickaxe"},
-            {7, "Dragon pickaxe"},
-            {8, "3rd age pickaxe"}
-        };
-        //cooldown currentPickaxe järgi
-        Dictionary<int, double> pickaxesCooldown = new Dictionary<int, double>()
-        {
-            {0, 4},
-            {1, 3.75},
-            {2, 3.5},
-            {3, 3.25},
-            {4, 3},
-            {5, 2.75},
-            {6, 2.5},
-            {7, 2.25},
-            {8, 2}
-        };
+        
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -50,44 +25,53 @@ namespace MineFine
             RequestWindowFeature(WindowFeatures.NoTitle);
 
             SetContentView(Resource.Layout.Shop);
-            var toShop = FindViewById<Button>(Resource.Id.toShop);
             Currency = FindViewById<TextView>(Resource.Id.gp);
-            Currency.Text = "You currently have " + databaseDataHandler.Currency.ToString() + " gp";
+            Currency.Text = databaseDataHandler.UserData.Currency.ToString();
             Pickaxe = FindViewById<Button>(Resource.Id.Upgrade);
             pickaxeText();
 
-            oreAdapter = new OreAdapter(this, databaseDataHandler.getObservable());
-           
+            oreAdapter = new OreAdapter(this, databaseDataHandler.OreObservableList);
+
             shopListView = FindViewById<ListView>(Resource.Id.shopMenu);
             shopListView.Adapter = oreAdapter;
             shopListView.ItemClick += ShopListView_ItemClick;
 
-            toShop.Click += delegate
+            Pickaxe.Click += delegate
             {
-                StartActivity(typeof(MainActivity));
+                if (databaseDataHandler.UserData.Currency >= databaseDataHandler.pickaxes[databaseDataHandler.UserData.CurrentPickaxeIndex].Cost)
+                {
+                    databaseDataHandler.UserData.Currency -= databaseDataHandler.pickaxes[databaseDataHandler.UserData.CurrentPickaxeIndex].Cost;
+                    databaseDataHandler.UserData.CurrentPickaxeIndex += 1;
+                    
+                    pickaxeText();
+                }
+                else
+                {
+                    Toast.MakeText(this, "You need "+ databaseDataHandler.pickaxes[databaseDataHandler.UserData.CurrentPickaxeIndex].Cost+" gold coins to buy this item", ToastLength.Short).Show();
+                }
             };
 
-            Pickaxe.Click += delegate
-                {
-                     (databaseDataHandler.Currency >= ((currentPickaxe + 1) * 10000))
-                     {
-                            currentPickaxe++;
-                            pickaxeText();
-                     }
-                };
-            
         }
 
         private void ShopListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            Toast.MakeText(this, databaseDataHandler.getObservable()[e.Position].Name, ToastLength.Short).Show();
-            Bundle args = new Bundle();
-            args.PutString("oreName", databaseDataHandler.getObservable()[e.Position].Name);
-            args.PutString("oreCount", databaseDataHandler.getObservable()[e.Position].OreCount.ToString());
-            createFragment(args,e.Position);
             
+            Bundle args = new Bundle();
+            args.PutString("oreName", databaseDataHandler.OreObservableList[e.Position].Name);
+            args.PutString("oreCount", databaseDataHandler.OreObservableList[e.Position].OreCount.ToString());
+            if (databaseDataHandler.OreObservableList[e.Position].IsOreUnlockedByUser)
+            {
+                args.PutString("leftBtnText", "Select");
+            }
+            else
+            {
+                args.PutString("leftBtnText", "Buy");
+            }
+            
+            createFragment(args, e.Position);
+
         }
-        
+
 
         private void createFragment(Bundle args, int pos)
         {
@@ -101,19 +85,28 @@ namespace MineFine
             ft.AddToBackStack(null);
             // Create and show the dialog.
             DialogFragmentCustom newFragment = DialogFragmentCustom.NewInstance(args);
-            newFragment.Dismissed += (s, e) => { Currency.Text = e.Text; databaseDataHandler.getObservable()[pos].OreCount = 0; newFragment.Dismiss(); oreAdapter.NotifyDataSetChanged(); };
+            newFragment.Dismissed += (s, e) => { Currency.Text = e.Text; databaseDataHandler.OreObservableList[pos].OreCount = 0; newFragment.Dismiss(); oreAdapter.NotifyDataSetChanged(); };
             //Add fragment
             newFragment.Show(ft, "shopDialog");
-            
+
         }
-    private void pickaxeText()
+        private void pickaxeText()
         {
-            if (currentPickaxe < 8)
-                Pickaxe.Text = "Upgrade pickaxe to " + pickaxes[currentPickaxe + 1];
+            if (databaseDataHandler.UserData.CurrentPickaxeIndex < 8)
+                Pickaxe.Text = "Upgrade pickaxe to " + databaseDataHandler.pickaxes[databaseDataHandler.UserData.CurrentPickaxeIndex+1].Name;
             else
                 Pickaxe.Text = "Pickaxe fully upgraded!";
         }
-
+        protected override void OnPause()
+        {
+            base.OnPause();
+            databaseDataHandler.saveDataDatabase(); // ei tea millal(/)kuhu seda panna veel
+        }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            databaseDataHandler.saveDataDatabase(); // ei tea millal(/)kuhu seda panna veel
+        }
     }
     public class DialogEventArgs : EventArgs
     {
