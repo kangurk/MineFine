@@ -50,6 +50,7 @@ namespace MineFine
             RequestWindowFeature(WindowFeatures.NoTitle);
 
             SetContentView(Resource.Layout.Shop);
+            var toShop = FindViewById<Button>(Resource.Id.toShop);
             Currency = FindViewById<TextView>(Resource.Id.gp);
             Currency.Text = "You currently have " + databaseDataHandler.Currency.ToString() + " gp";
             Pickaxe = FindViewById<Button>(Resource.Id.Upgrade);
@@ -60,6 +61,11 @@ namespace MineFine
             shopListView = FindViewById<ListView>(Resource.Id.shopMenu);
             shopListView.Adapter = oreAdapter;
             shopListView.ItemClick += ShopListView_ItemClick;
+
+            toShop.Click += delegate
+            {
+                StartActivity(typeof(MainActivity));
+            };
 
             Pickaxe.Click += delegate
                 {
