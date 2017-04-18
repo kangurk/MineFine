@@ -43,10 +43,10 @@ namespace MineFine
             totalLevel = FindViewById<TextView>(Resource.Id.Level);
 
             initializeDatabase();
-
+            
             totalExp.Text = "total experience is " + databaseDataHandler.UserData.Experience.ToString();
             totalLevel.Text = "Your current level is " + databaseDataHandler.UserData.Level.ToString();
-
+            defineNextlevel(databaseDataHandler.UserData.Level - 1);
 
             toShop.Click += delegate
             {
@@ -69,12 +69,21 @@ namespace MineFine
         {
             if (databaseDataHandler.UserData.Experience > nextLevel)
             {
-                double temp = nextLevel * 1.1;
-                double together = nextLevel + temp;
+                ddefineNextlevel(databaseDataHandler.UserData.Level);
                 databaseDataHandler.UserData.Level += 1;
-                nextLevel = together;
+                levelUp();
             }
             return 0;
+        }
+        private void defineNextlevel(int userLevel)
+        {
+            double tempNextLevel = 0;
+                for (int i = 0; i < userLevel+1; i++)
+                {
+                    double levelDifference = 83 * Math.Pow(1.104, i);
+                    tempNextLevel += levelDifference;
+                }
+            nextLevel = tempNextLevel;
         }
         private void randomEvents()
         {
