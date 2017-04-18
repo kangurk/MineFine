@@ -15,14 +15,14 @@ namespace MineFine
         "Ores.db3");
         
         Dictionary<string, int> imageResources = new Dictionary<string, int>() {
-            {"Copper_Ore",Resource.Drawable.Copper_Ore},
-            {"Tin_Ore",Resource.Drawable.Tin_Ore},
-            {"Iron_Ore",Resource.Drawable.Iron_Ore},
-            {"Silver_Ore",Resource.Drawable.Silver_Ore},
-            {"Mithril_Ore",Resource.Drawable.Mithril_Ore},
-            {"Adamantite_Ore",Resource.Drawable.Adamantite_Ore},
-            {"Runite_Ore",Resource.Drawable.Runite_Ore},
-            {"Coal_Ore",Resource.Drawable.Coal_Ore}};
+            {"Copper Ore",Resource.Drawable.Copper_Ore},
+            {"Tin Ore",Resource.Drawable.Tin_Ore},
+            {"Iron Ore",Resource.Drawable.Iron_Ore},
+            {"Silver Ore",Resource.Drawable.Silver_Ore},
+            {"Mithril Ore",Resource.Drawable.Mithril_Ore},
+            {"Adamantite Ore",Resource.Drawable.Adamantite_Ore},
+            {"Runite Ore",Resource.Drawable.Runite_Ore},
+            {"Coal Ore",Resource.Drawable.Coal_Ore}};
         SqliteConnection connection;
 
 
@@ -39,14 +39,14 @@ namespace MineFine
                 "CREATE TABLE UserData (experience INTEGER, expLevel INTEGER, currency INTEGER, currentPickaxe INTEGER);",
                 "INSERT INTO UserData (experience, expLevel,currency,currentPickaxe) VALUES ('0','1','1','0')",
                 "CREATE TABLE Ores (oreName VARCHAR(30), oreCount INTEGER, oreCurrencyValue INTEGER, oreExpRate INTEGER, isOreUnlocked bit);",
-                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate, isOreUnlocked) VALUES ('Copper_Ore','0','10','10','1')",
-                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate, isOreUnlocked) VALUES ('Tin_Ore', '0', '17', '17','0')",
-                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate, isOreUnlocked) VALUES ('Iron_Ore', '0', '30', '30','0')",
-                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate, isOreUnlocked) VALUES ('Silver_Ore', '0', '40', '40','0')",
-                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate, isOreUnlocked) VALUES ('Coal_Ore', '0', '50', '50','0')",
-                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate, isOreUnlocked) VALUES ('Mithril_Ore', '0', '80', '80','0')",
-                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate, isOreUnlocked) VALUES ('Adamantite_Ore', '0', '95', '95','0')",
-                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate, isOreUnlocked) VALUES ('Runite_Ore', '0', '125', '125','0')"};
+                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate, isOreUnlocked) VALUES ('Copper Ore','0','10','10','1')",
+                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate, isOreUnlocked) VALUES ('Tin Ore', '0', '17', '17','0')",
+                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate, isOreUnlocked) VALUES ('Iron Ore', '0', '30', '30','0')",
+                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate, isOreUnlocked) VALUES ('Silver Ore', '0', '40', '40','0')",
+                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate, isOreUnlocked) VALUES ('Coal Ore', '0', '50', '50','0')",
+                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate, isOreUnlocked) VALUES ('Mithril Ore', '0', '80', '80','0')",
+                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate, isOreUnlocked) VALUES ('Adamantite Ore', '0', '95', '95','0')",
+                "INSERT INTO Ores (oreName, oreCount,oreCurrencyValue,oreExpRate, isOreUnlocked) VALUES ('Runite Ore', '0', '125', '125','0')"};
                 connection = new SqliteConnection("Data Source=" + dbPath);
                 connection.Open();
 
@@ -116,7 +116,7 @@ namespace MineFine
             //init some values 
             OreObservableList = new ObservableCollection<Ore>();
             UserData = new User();
-            UserData.CurrentOre = "Copper_Ore";
+            UserData.CurrentOre = "Copper Ore";
 
             connection.Open();
             getOreData();

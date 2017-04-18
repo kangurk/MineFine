@@ -10,7 +10,7 @@
         android:text="@string/toShop"
         android:background="@drawable/buttton" />
     <ImageView
-        android:src="@drawable/Copper Ore"
+        android:src="@drawable/Copper_Ore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/mainImage"
