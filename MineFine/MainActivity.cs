@@ -97,8 +97,8 @@ namespace MineFine
             events.Add("Quiz");
             Random npcChance = new Random();
             var chance1 = npcChance.Next(1, 4);
-            Java.Util.Random eventChance = new Java.Util.Random();
-            var chance = eventChance.NextInt(2);
+            Random eventChance = new Random();
+            var chance = eventChance.NextInt(100);
             if (chance == 1)
             {
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -194,9 +194,10 @@ namespace MineFine
             if (!timer.Enabled)
             {
                 mainImage.SetImageResource(currentActiveOre.Image);
+                timer.Interval = 4000 / databaseDataHandler.UserData.UserPickaxe.CoolDownRate;
             }
            
-            timer.Interval = 4000/databaseDataHandler.UserData.UserPickaxe.CoolDownRate;
+            
             
         }
         
