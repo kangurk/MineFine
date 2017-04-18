@@ -147,6 +147,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="README.txt" />
+    <AndroidResource Include="Resources\drawable\mainscreen.png" />
+    <AndroidResource Include="Resources\drawable\buttton.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Mono.Data.Sqlite.Portable.1.0.3.5\tools\Mono.Data.Sqlite.Portable.targets" Condition="Exists('..\packages\Mono.Data.Sqlite.Portable.1.0.3.5\tools\Mono.Data.Sqlite.Portable.targets')" />
