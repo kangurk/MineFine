@@ -80,7 +80,6 @@
     <None Include="Assets\AboutAssets.txt" />
     <AndroidResource Include="Resources\layout\CustomDialog.axml" />
     <AndroidResource Include="Resources\layout\levelUp.axml" />
-    <AndroidResource Include="Resources\layout\RandomEvent.axml" />
     <AndroidResource Include="Resources\layout\Shop.axml" />
     <AndroidResource Include="Resources\layout\ShopListViewLayout.axml" />
   </ItemGroup>
