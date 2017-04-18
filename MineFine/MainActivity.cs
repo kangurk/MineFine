@@ -13,7 +13,6 @@ namespace MineFine
     [Activity(Label = "minefine", MainLauncher = true, Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : Activity
     {
-        //
         double nextLevel = 83;
         string question;
         string positive;
