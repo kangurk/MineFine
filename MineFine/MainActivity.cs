@@ -98,7 +98,7 @@ namespace MineFine
             Random npcChance = new Random();
             var chance1 = npcChance.Next(1, 4);
             Java.Util.Random eventChance = new Java.Util.Random();
-            var chance = eventChance.NextInt(100);
+            var chance = eventChance.NextInt(2);
             if (chance == 1)
             {
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -134,10 +134,12 @@ namespace MineFine
                 alert.SetPositiveButton(positive, (senderAlert, args) =>
                 {
                     databaseDataHandler.UserData.Experience += 100;
+                    totalExp.Text = "total experience is " + databaseDataHandler.UserData.Experience.ToString();
                 });
                 alert.SetNegativeButton(negative, (senderAlert, args) =>
                 {
                     databaseDataHandler.UserData.Experience -= 100;
+                    totalExp.Text = "total experience is " + databaseDataHandler.UserData.Experience.ToString();
                 });
                 Dialog dialog = alert.Create();
                 dialog.SetCanceledOnTouchOutside(false);
