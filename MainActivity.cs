@@ -137,6 +137,8 @@ namespace MineFine
                     databaseDataHandler.UserData.Experience -= 100;
                 });
                 Dialog dialog = alert.Create();
+                dialog.SetCanceledOnTouchOutside(false);
+                dialog.SetCancelable(false);
                 dialog.Show();
             }
         }
