@@ -3,11 +3,12 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<TextView
-    android:text="You've achieved a level"
-    android:textAppearance="?android:attr/textAppearanceMedium"
-    android:layout_width="380.5dp"
-    android:layout_height="300px"
-    android:id="@+id/levelupText"
-    android:gravity="center" />
+    <TextView
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="381.5dp"
+        android:layout_height="300px"
+        android:id="@+id/levelupText"
+        android:gravity="center"
+        android:background="@drawable/levelupback"
+        android:layout_marginRight="0.0dp" />
 </LinearLayout>

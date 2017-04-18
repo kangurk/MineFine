@@ -78,34 +78,37 @@ namespace MineFine
 			public const int Iron_Ore = 2130837514;
 			
 			// aapt resource value: 0x7f02000b
-			public const int levelupp = 2130837515;
+			public const int levelupback = 2130837515;
 			
 			// aapt resource value: 0x7f02000c
-			public const int listviewbackground = 2130837516;
+			public const int levelupp = 2130837516;
 			
 			// aapt resource value: 0x7f02000d
-			public const int mainscreen = 2130837517;
+			public const int listviewbackground = 2130837517;
 			
 			// aapt resource value: 0x7f02000e
-			public const int Mithril_Ore = 2130837518;
+			public const int mainscreen = 2130837518;
 			
 			// aapt resource value: 0x7f02000f
-			public const int quiz = 2130837519;
+			public const int Mithril_Ore = 2130837519;
 			
 			// aapt resource value: 0x7f020010
-			public const int RuneScape_Lumgenstor = 2130837520;
+			public const int quiz = 2130837520;
 			
 			// aapt resource value: 0x7f020011
-			public const int Runite_Ore = 2130837521;
+			public const int RuneScape_Lumgenstor = 2130837521;
 			
 			// aapt resource value: 0x7f020012
-			public const int shopbackground = 2130837522;
+			public const int Runite_Ore = 2130837522;
 			
 			// aapt resource value: 0x7f020013
-			public const int Silver_Ore = 2130837523;
+			public const int shopbackground = 2130837523;
 			
 			// aapt resource value: 0x7f020014
-			public const int Tin_Ore = 2130837524;
+			public const int Silver_Ore = 2130837524;
+			
+			// aapt resource value: 0x7f020015
+			public const int Tin_Ore = 2130837525;
 			
 			static Drawable()
 			{

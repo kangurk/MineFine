@@ -17,6 +17,7 @@ namespace MineFine
 
     public class DialogFragmentCustom : DialogFragment
     {
+
         DatabaseDataHandler databaseDataHandler = DatabaseDataHandler.Instance;
         string btnText = "Buy";
         public static DialogFragmentCustom NewInstance(Bundle bundle)
