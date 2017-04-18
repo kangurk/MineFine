@@ -46,7 +46,7 @@ namespace MineFine
             
             totalExp.Text = "total experience is " + databaseDataHandler.UserData.Experience.ToString();
             totalLevel.Text = "Your current level is " + databaseDataHandler.UserData.Level.ToString();
-            defineNextlevel(databaseDataHandler.UserData.Level - 1);
+            defineNextlevel(databaseDataHandler.UserData.Level);
 
             toShop.Click += delegate
             {
@@ -69,7 +69,7 @@ namespace MineFine
         {
             if (databaseDataHandler.UserData.Experience > nextLevel)
             {
-                ddefineNextlevel(databaseDataHandler.UserData.Level);
+                defineNextlevel(databaseDataHandler.UserData.Level + 1);
                 databaseDataHandler.UserData.Level += 1;
                 levelUp();
             }
@@ -78,7 +78,7 @@ namespace MineFine
         private void defineNextlevel(int userLevel)
         {
             double tempNextLevel = 0;
-                for (int i = 0; i < userLevel+1; i++)
+                for (int i = 0; i < userLevel; i++)
                 {
                     double levelDifference = 83 * Math.Pow(1.104, i);
                     tempNextLevel += levelDifference;
