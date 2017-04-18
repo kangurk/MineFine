@@ -130,11 +130,11 @@ namespace MineFine
                 alert.SetMessage(question);
                 alert.SetPositiveButton(positive, (senderAlert, args) =>
                 {
-                    //auhind kui õigesti vastad
+                    databaseDataHandler.UserData.Experience += 100;
                 });
                 alert.SetNegativeButton(negative, (senderAlert, args) =>
                 {
-                    //auhind kui valesti vastad
+                    databaseDataHandler.UserData.Experience -= 100;
                 });
                 Dialog dialog = alert.Create();
                 dialog.Show();
