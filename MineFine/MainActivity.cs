@@ -194,9 +194,10 @@ namespace MineFine
             if (!timer.Enabled)
             {
                 mainImage.SetImageResource(currentActiveOre.Image);
+                timer.Interval = 4000 / databaseDataHandler.UserData.UserPickaxe.CoolDownRate;
             }
            
-            timer.Interval = 4000/databaseDataHandler.UserData.UserPickaxe.CoolDownRate;
+            
             
         }
         
