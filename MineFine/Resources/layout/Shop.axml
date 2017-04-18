@@ -13,7 +13,8 @@
         android:text="@string/toMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/toMain" />
+        android:id="@+id/toMain"
+        android:background="@drawable/buttton" />
     <LinearLayout
         android:orientation="horizontal"
         android:minWidth="25px"
@@ -25,7 +26,8 @@
         android:text="@string/Upgrade"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/Upgrade" />
+        android:id="@+id/Upgrade"
+        android:background="@drawable/buttton" />
     <ListView
         android:minWidth="25px"
         android:minHeight="25px"

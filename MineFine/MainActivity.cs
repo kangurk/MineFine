@@ -2,7 +2,6 @@ using Android.App;
 using Android.Widget;
 using Android.OS;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using Android.Content.PM;
 using System;
