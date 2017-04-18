@@ -165,14 +165,7 @@ namespace MineFine
             timer.Enabled = false;
             RunOnUiThread(() => mainImage.SetImageResource(currentActiveOre.Image));
         }
-        private void experienceHour()
-        {
-           
 
-          
-        }
-
-    
         /// <summary>
         /// gets data from local database
         /// </summary>
@@ -196,7 +189,11 @@ namespace MineFine
         {
             base.OnResume();
             currentActiveOre = databaseDataHandler.OreObservableList.Select((p) => new { Ore = p }).Where(p => p.Ore.Name == databaseDataHandler.UserData.CurrentOre).First().Ore;
-            mainImage.SetImageResource(currentActiveOre.Image);
+            if (!timer.Enabled)
+            {
+                mainImage.SetImageResource(currentActiveOre.Image);
+            }
+           
             timer.Interval = 4000/databaseDataHandler.UserData.UserPickaxe.CoolDownRate;
             
         }

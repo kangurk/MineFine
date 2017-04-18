@@ -101,7 +101,7 @@ namespace MineFine
             {
                 contents.CommandText = "SELECT * from Ores";
                 var r = contents.ExecuteReader();
-                while (r.Read())
+                while (r.Read())//multiple tables
                 {
                     OreObservableList.Add(new Ore(r["oreName"].ToString(), imageResources[r["oreName"].ToString()], Convert.ToInt32(r["oreCount"].ToString()),
                         Convert.ToInt32(r["oreCurrencyValue"].ToString()), Convert.ToInt32(r["oreExpRate"].ToString()),(bool)r["isOreUnlocked"]));
@@ -117,69 +117,32 @@ namespace MineFine
             OreObservableList = new ObservableCollection<Ore>();
             UserData = new User();
             UserData.CurrentOre = "Copper_Ore";
+
             connection.Open();
             getOreData();
-            getExp();
-            getExpLevel();
-            getCurrency();
-            getCurrentPickaxe();
+            getUserData();
             connection.Close();
         }
         /// <summary>
         /// Gets the stored data from the local database (prob vahetan nime ära millalgi xd)
         /// </summary>
-        private void getExp()
+        private void getUserData()
         {
             using (var contents = connection.CreateCommand())
             {
-                contents.CommandText = "SELECT experience from userData";
+                contents.CommandText = "SELECT * from UserData";
                 var r = contents.ExecuteReader();
-                Console.WriteLine("Reading data");
-                while (r.Read())
-                {
-                    Console.WriteLine("experience = {0}", Convert.ToInt32(r["experience"].ToString()));
-                    UserData.Experience = Convert.ToInt32(r["experience"].ToString());
-                }
+
+                UserData.CurrentPickaxeIndex = Convert.ToInt32(r["currentPickaxe"].ToString());
+                UserData.UserPickaxe = pickaxes[UserData.CurrentPickaxeIndex];
+                UserData.Experience = Convert.ToInt32(r["experience"].ToString());
+                UserData.Currency = Convert.ToInt32(r["currency"].ToString());
+                UserData.Level = Convert.ToInt32(r["expLevel"].ToString());
             }
         }
-        private void getCurrentPickaxe()
-        {
-            using (var contents = connection.CreateCommand())
-            {
-                contents.CommandText = "SELECT currentPickaxe from userData";
-                var r = contents.ExecuteReader();
-                while (r.Read())
-                {
-                    UserData.CurrentPickaxeIndex = Convert.ToInt32(r["currentPickaxe"].ToString());
-                    UserData.UserPickaxe = pickaxes[UserData.CurrentPickaxeIndex];
-                }
-            }
-        }
-        private void getCurrency()
-        {
-            using (var contents = connection.CreateCommand())
-            {
-                contents.CommandText = "SELECT currency from userData";
-                var r = contents.ExecuteReader();
-                while (r.Read())
-                {
-                    UserData.Currency = Convert.ToInt32(r["currency"].ToString());
-                }
-            }
-        }
-        private void getExpLevel()
-        {
-            using (var contents = connection.CreateCommand())
-            {
-                contents.CommandText = "SELECT expLevel from userData";
-                var r = contents.ExecuteReader();
-                while (r.Read())
-                {
-                    Console.WriteLine("expLevel = {0}", Convert.ToInt32(r["expLevel"].ToString()));
-                    UserData.Level = Convert.ToInt32(r["expLevel"].ToString());
-                }
-            }
-        }
+        
+        
+        
         /// <summary>
         /// Saves Data to database
         /// </summary>

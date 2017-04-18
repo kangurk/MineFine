@@ -38,7 +38,7 @@ namespace MineFine
             shopListView.ItemClick += ShopListView_ItemClick;
             toShop.Click += delegate
             {
-                StartActivity(typeof(MainActivity));
+                base.OnBackPressed();
             };
             Pickaxe.Click += delegate
             {
