@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/shopbackground">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,5 +34,6 @@
         android:minHeight="25px"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/shopMenu" />
+        android:id="@+id/shopMenu"
+        android:layout_marginTop="11.0dp" />
 </LinearLayout>

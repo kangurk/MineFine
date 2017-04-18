@@ -24,7 +24,6 @@ namespace MineFine
 
         Button toShop;
         ImageView mainImage;
-        TextView expHour;
         TextView totalExp;
         TextView totalLevel;
         System.Timers.Timer timer;

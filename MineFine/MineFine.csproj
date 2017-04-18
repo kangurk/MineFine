@@ -98,13 +98,13 @@
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Adamantite_Ore.png" />
+    <AndroidResource Include="Resources\drawable\Adamantite Ore.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Coal_Ore.png" />
+    <AndroidResource Include="Resources\drawable\Coal Ore.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Copper_Ore.png" />
+    <AndroidResource Include="Resources\drawable\Copper Ore.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\Depleted_Ore.png" />
@@ -119,16 +119,16 @@
     <AndroidResource Include="Resources\drawable\genie.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Gold_Ore.png" />
+    <AndroidResource Include="Resources\drawable\Gold Ore.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Iron_Ore.png" />
+    <AndroidResource Include="Resources\drawable\Iron Ore.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\levelupp.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Mithril_Ore.png" />
+    <AndroidResource Include="Resources\drawable\Mithril Ore.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\quiz.png" />
@@ -137,18 +137,20 @@
     <AndroidResource Include="Resources\drawable\RuneScape_Lumgenstor.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Runite_Ore.png" />
+    <AndroidResource Include="Resources\drawable\Runite Ore.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Silver_Ore.png" />
+    <AndroidResource Include="Resources\drawable\Silver Ore.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Tin_Ore.png" />
+    <AndroidResource Include="Resources\drawable\Tin Ore.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="README.txt" />
     <AndroidResource Include="Resources\drawable\mainscreen.png" />
     <AndroidResource Include="Resources\drawable\buttton.png" />
+    <AndroidResource Include="Resources\drawable\shopbackground.png" />
+    <AndroidResource Include="Resources\drawable\listviewbackground.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Mono.Data.Sqlite.Portable.1.0.3.5\tools\Mono.Data.Sqlite.Portable.targets" Condition="Exists('..\packages\Mono.Data.Sqlite.Portable.1.0.3.5\tools\Mono.Data.Sqlite.Portable.targets')" />

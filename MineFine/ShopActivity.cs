@@ -27,7 +27,7 @@ namespace MineFine
             SetContentView(Resource.Layout.Shop);
             var toShop = FindViewById<Button>(Resource.Id.toMain);
             Currency = FindViewById<TextView>(Resource.Id.gp);
-            Currency.Text = databaseDataHandler.UserData.Currency.ToString();
+            Currency.Text = "You currently have " + databaseDataHandler.UserData.Currency.ToString() + " gp";
             Pickaxe = FindViewById<Button>(Resource.Id.Upgrade);
             pickaxeText();
 
