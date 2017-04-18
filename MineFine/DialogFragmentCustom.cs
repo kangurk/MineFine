@@ -28,8 +28,17 @@ namespace MineFine
             
         }
 
+
+        public override void OnCreate(Bundle savedInstanceState)
+        {
+            base.OnCreate(savedInstanceState);
+            base.SetStyle(DialogFragmentStyle.NoTitle, 0);
+        
+        }
+
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
+
             
             string oreName = Arguments.GetString("oreName");
             string oreCount = Arguments.GetString("oreCount");

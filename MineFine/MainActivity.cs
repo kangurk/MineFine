@@ -98,7 +98,7 @@ namespace MineFine
             Random npcChance = new Random();
             var chance1 = npcChance.Next(1, 4);
             Random eventChance = new Random();
-            var chance = eventChance.NextInt(100);
+            var chance = eventChance.Next(100);
             if (chance == 1)
             {
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);

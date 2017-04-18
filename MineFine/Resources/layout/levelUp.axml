@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
     <TextView
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="381.5dp"
+        android:layout_width="wrap_content"
         android:layout_height="300px"
         android:id="@+id/levelupText"
         android:gravity="center"
