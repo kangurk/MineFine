@@ -132,7 +132,7 @@ namespace MineFine
             {
                 contents.CommandText = "SELECT * from UserData";
                 var r = contents.ExecuteReader();
-                Console.WriteLine("Reading data");
+
                 UserData.CurrentPickaxeIndex = Convert.ToInt32(r["currentPickaxe"].ToString());
                 UserData.UserPickaxe = pickaxes[UserData.CurrentPickaxeIndex];
                 UserData.Experience = Convert.ToInt32(r["experience"].ToString());
