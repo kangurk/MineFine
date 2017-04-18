@@ -13,8 +13,7 @@ namespace MineFine
     [Activity(Label = "minefine", MainLauncher = true, Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : Activity
     {
-
-
+        //
         double nextLevel = 83;
         string question;
         string positive;
@@ -38,7 +37,6 @@ namespace MineFine
             SetContentView(Resource.Layout.Main);
             toShop = FindViewById<Button>(Resource.Id.toShop);
             mainImage = FindViewById<ImageView>(Resource.Id.mainImage);
-            expHour = FindViewById<TextView>(Resource.Id.expHour);
             totalExp = FindViewById<TextView>(Resource.Id.totalExp);
             totalLevel = FindViewById<TextView>(Resource.Id.Level);
 
@@ -55,8 +53,7 @@ namespace MineFine
 
             mainImage.Click += delegate
             {
-                //translation for this line = selecti observablelistist Ore class mille Ore.Name on sama nimega mis currentOre ja liida sellele 1 
-                //ja kuna observablecollection on reference databasedatahandler classi variablist siis muutub see value ka databasedatahandler classi observablecollectionis
+
                 currentActiveOre.OreCount += 1;
                 databaseDataHandler.UserData.Experience += currentActiveOre.OreExpRate;
                 totalExp.Text = "total experience is " + databaseDataHandler.UserData.Experience.ToString();
