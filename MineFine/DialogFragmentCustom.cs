@@ -24,10 +24,12 @@ namespace MineFine
             DialogFragmentCustom fragment = new DialogFragmentCustom();
             fragment.Arguments = bundle;
             return fragment;
+            
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
+            
             string oreName = Arguments.GetString("oreName");
             string oreCount = Arguments.GetString("oreCount");
             btnText = Arguments.GetString("leftBtnText");

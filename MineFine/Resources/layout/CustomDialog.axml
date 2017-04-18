@@ -3,7 +3,8 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:background="@drawable/shopbackground">
     <TextView
         android:text="Copper Ore"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -30,13 +31,15 @@
             android:id="@+id/btnLeft"
             android:layout_marginTop="10dp"
             android:layout_width="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@drawable/buttton" />
         <Button
             android:text="Sell"
             android:layout_height="wrap_content"
             android:id="@+id/btnRight"
             android:layout_marginTop="10dp"
             android:layout_width="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@drawable/buttton" />
     </LinearLayout>
 </LinearLayout>
