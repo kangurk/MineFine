@@ -7,6 +7,7 @@ using System.Linq;
 using Android.Content.PM;
 using System;
 using Android.Views;
+using System.Threading;
 
 namespace MineFine
 {
@@ -28,6 +29,7 @@ namespace MineFine
         TextView expHour;
         TextView totalExp;
         TextView totalLevel;
+        System.Timers.Timer timer;
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -39,6 +41,9 @@ namespace MineFine
             mainImage = FindViewById<ImageView>(Resource.Id.mainImage);
             totalExp = FindViewById<TextView>(Resource.Id.totalExp);
             totalLevel = FindViewById<TextView>(Resource.Id.Level);
+
+            timer = new System.Timers.Timer();
+            timer.Elapsed += OnTimedEvent;
 
             initializeDatabase();
             
@@ -53,13 +58,17 @@ namespace MineFine
 
             mainImage.Click += delegate
             {
-
-                currentActiveOre.OreCount += 1;
-                databaseDataHandler.UserData.Experience += currentActiveOre.OreExpRate;
-                totalExp.Text = "total experience is " + databaseDataHandler.UserData.Experience.ToString();
-                Level();
-                totalLevel.Text = "Your current level is " + databaseDataHandler.UserData.Level.ToString();
-                randomEvents();
+                if (!timer.Enabled)
+                {
+                    currentActiveOre.OreCount += 1;
+                    databaseDataHandler.UserData.Experience += currentActiveOre.OreExpRate;
+                    totalExp.Text = "total experience is " + databaseDataHandler.UserData.Experience.ToString();
+                    Level();
+                    totalLevel.Text = "Your current level is " + databaseDataHandler.UserData.Level.ToString();
+                    randomEvents();
+                    oreCooldown();
+                }
+                
             };
         }
         private int Level()
@@ -150,12 +159,23 @@ namespace MineFine
         }
         private void oreCooldown()
         {
+            mainImage.SetImageResource(Resource.Drawable.Depleted_Ore);
+            timer.Enabled = true;
 
+        }
+        private void OnTimedEvent(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            timer.Enabled = false;
+            RunOnUiThread(() => mainImage.SetImageResource(currentActiveOre.Image));
         }
         private void experienceHour()
         {
+           
 
+          
         }
+
+    
         /// <summary>
         /// gets data from local database
         /// </summary>
@@ -180,7 +200,16 @@ namespace MineFine
             base.OnResume();
             currentActiveOre = databaseDataHandler.OreObservableList.Select((p) => new { Ore = p }).Where(p => p.Ore.Name == databaseDataHandler.UserData.CurrentOre).First().Ore;
             mainImage.SetImageResource(currentActiveOre.Image);
+            timer.Interval = 4000/databaseDataHandler.UserData.UserPickaxe.CoolDownRate;
+            
         }
+        
+    }
+
+    class oreCooldownTimer
+    {
+        public int counter = 0;
+        public Timer tmr;
 
     }
 }
